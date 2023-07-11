@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Server=tcp:DESKTOP-VRR1JH4.database.windows.net,1433;"
+    }
+  }
+}
