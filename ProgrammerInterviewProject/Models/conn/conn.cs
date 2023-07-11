@@ -33,5 +33,28 @@ namespace ProgrammerInterviewProject.Models.dbconn
                 return null;
             }
         }
+        public DataTable GetDataTable(SqlConnection sc, string sqlstr, int Timeout)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (SqlConnection sqlConn = new SqlConnection(sc.ConnectionString))
+                {
+                    sqlConn.Open();
+                    SqlCommand sqlComm = new SqlCommand();
+                    sqlComm.Connection = sqlConn;
+                    sqlComm.CommandTimeout = Timeout;
+                    sqlComm.CommandText = sqlstr;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(sqlComm);
+                    adapter.Fill(dt);
+                    return dt;
+                }
+            }
+            catch (SqlException e)
+            {
+                return null;
+            }
+        }
     }
 }
