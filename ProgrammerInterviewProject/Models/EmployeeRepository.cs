@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using YRE.DataSource;
 using YRE.DataSource.Entity;
@@ -26,10 +27,10 @@ namespace YRE.ProgrammerInterviewProject.Models
                         Fname = drEmployee[1].ToString().Trim(),
                         Minit = drEmployee[2].ToString().Trim(),
                         Lname = drEmployee[3].ToString().Trim(),
-                        Job_id = drEmployee[4].ToString().Trim(),
-                        Job_lvl = drEmployee[5].ToString().Trim(),
-                        Pub_id = drEmployee[6].ToString().Trim(),
-                        Hire_date = drEmployee[7].ToString().Trim()
+                        Job_id = Convert.ToInt32(drEmployee[4].ToString().Trim()),
+                        Job_lvl = Convert.ToInt32(drEmployee[5].ToString().Trim()),
+                        Pub_id = Convert.ToInt32(drEmployee[6].ToString().Trim()),
+                        Hire_date = Convert.ToInt32(drEmployee[7].ToString().Trim())
                     }
                 );
             }
@@ -40,7 +41,7 @@ namespace YRE.ProgrammerInterviewProject.Models
         }
 
         /// <summary>
-        /// 
+        /// 回傳列舉<Model_DataObject_Employee> 的參數
         /// </summary>
         public IEnumerable<Model_DataObject_Employee> Employees => employees.Values;
 

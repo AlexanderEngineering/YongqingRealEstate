@@ -14,10 +14,10 @@ namespace YRE.ProgrammerInterviewProject.Models.DataObject
         public string Fname { get; set; }
         public string Minit { get; set; }
         public string Lname { get; set; }
-        public string Job_id { get; set; }
-        public string Job_lvl { get; set; }
-        public string Pub_id { get; set; }
-        public string Hire_date { get; set; }
+        public int Job_id { get; set; }
+        public int Job_lvl { get; set; }
+        public int Pub_id { get; set; }
+        public int Hire_date { get; set; }
 
         /// <summary>
         /// 分頁的參數

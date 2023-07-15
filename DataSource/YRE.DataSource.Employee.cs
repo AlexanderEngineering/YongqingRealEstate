@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace YRE.DataSource
@@ -9,21 +10,21 @@ namespace YRE.DataSource
         readonly string fname;
         readonly string minit;
         readonly string lname;
-        readonly string job_id;
-        readonly string job_lvl;
-        readonly string pub_id;
-        readonly string hire_date;
+        readonly int job_id;
+        readonly int job_lvl;
+        readonly int pub_id;
+        readonly int hire_date;
 
         public string Emp_id { get { return emp_id; } }
         public string Fname { get { return fname; } }
         public string Minit { get { return minit; } }
         public string Lname { get { return lname; } }
-        public string Job_id { get { return job_id; } }
-        public string Job_lvl { get { return job_lvl; } }
-        public string Pub_id { get { return pub_id; } }
-        public string Hire_date { get { return hire_date; } }
+        public int Job_id { get { return job_id; } }
+        public int Job_lvl { get { return job_lvl; } }
+        public int Pub_id { get { return pub_id; } }
+        public int Hire_date { get { return hire_date; } }
 
-        public YRE_DataSource_Employee(string emp_id, string fname, string minit, string lname, string job_id, string job_lvl, string pub_id, string hire_date)
+        public YRE_DataSource_Employee(string emp_id, string fname, string minit, string lname, int job_id, int job_lvl, int pub_id, int hire_date)
         {
             this.emp_id = emp_id;
             this.fname = fname;
@@ -51,10 +52,10 @@ namespace YRE.DataSource
                             fname: dremployees[1].ToString().Trim(),
                             minit: dremployees[2].ToString().Trim(),
                             lname: dremployees[3].ToString().Trim(),
-                            job_id: dremployees[4].ToString().Trim(),
-                            job_lvl: dremployees[5].ToString().Trim(),
-                            pub_id: dremployees[6].ToString().Trim(),
-                            hire_date: dremployees[7].ToString().Trim()
+                            job_id: Convert.ToInt32(dremployees[4].ToString().Trim()),
+                            job_lvl: Convert.ToInt32(dremployees[5].ToString().Trim()),
+                            pub_id: Convert.ToInt32(dremployees[6].ToString().Trim()),
+                            hire_date: Convert.ToInt32(dremployees[7].ToString().Trim())
                         )
                     );
             }
