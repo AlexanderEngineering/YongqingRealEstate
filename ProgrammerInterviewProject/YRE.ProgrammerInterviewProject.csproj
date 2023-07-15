@@ -131,10 +131,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataObject\Model.DataObject.PubInfo.cs" />
     <Compile Include="Models\DataObject\Model.DataObject.Employee.cs" />
-    <Compile Include="Models\DataObject\Model.DataObject.Pub_Info.cs" />
-    <Compile Include="Models\IRepository.cs" />
-    <Compile Include="Models\EmployeeRepository.cs" />
+    <Compile Include="Models\Repository\EmployeeDetailRepository.cs" />
+    <Compile Include="Models\Repository\IRepository.cs" />
+    <Compile Include="Models\Repository\EmployeeReportRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +174,7 @@
     <Content Include="Views\Home\EmployeeReport.cshtml" />
     <Content Include="Views\Home\SelfResume.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\AddEmployee.cshtml" />
+    <Content Include="Views\Home\EmployeeDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
