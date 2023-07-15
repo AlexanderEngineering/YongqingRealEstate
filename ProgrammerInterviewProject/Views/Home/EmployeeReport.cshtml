@@ -1,13 +1,12 @@
 ﻿@model YRE.ProgrammerInterviewProject.Models.DataObject.Model_DataObject_Employee
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "EmployeeReport";
     WebGrid grid = new WebGrid(null, rowsPerPage: @Model.PageSize);
     grid.Bind(Model.Employees, autoSortAndPage: true, rowCount: @Model.PageSize);
 
 }
 
 <h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
 <br />
 @grid.GetHtml(tableStyle: "table table-bordered",
@@ -25,35 +24,34 @@
         grid.Column("Job_lvl", "Job LVL"),
         grid.Column("Pub_id", "Pub ID"),
         grid.Column("Hire_date", "Hire Date"),
-        grid.Column(header: "Action",
-            format: @<a data-value="@item.Emp_id" href="java{C}<!-- no -->script:void(0)">Edit</a>)
+        grid.Column(header: "Detail",
+                format: @<text><a data-value='@item.Pub_id' href='javascript:void(0)' class='btnLink'>Link</a></text>)
+
 ))
+
+<table id="dialog" title="employee etail" style="background-color:#00ffe8; overflow: auto;"></table>
+
 
 @section Scripts{
     <script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            var id = 0;
-            $(document).on('click', '.btnEdit', function () {
-                id = $(this).attr("data-value");
+            var pub_id = 0;
+            $(document).on('click', '.btnLink', function () {
+                pub_id = $(this).attr("data-value");
                 $('#dialog').dialog('open');
             });
 
             $('#dialog').dialog({
                 autoOpen: false,
-                width: 400,
+                width: 1000,
+                high: 1000,
                 resizable: false,
-                title: 'Edit Product details',
+                title: 'Edit Employee details',
                 modal: true,
                 open: function (event, ui) {
-                    // Load partial view _GridEditPartial
-                    $(this).load("@Url.Action("GetProductById")", { id: id });
-                },
-                buttons: {
-                    "Close": function () {
-                        $(this).dialog("close");
-                    }
+                    $(this).load("@Url.Action("EmployeeDetail")", { Pub_id: pub_id });
                 }
             });
         });

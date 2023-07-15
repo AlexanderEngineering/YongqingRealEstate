@@ -1,0 +1,30 @@
+﻿@model YRE.ProgrammerInterviewProject.Models.DataObject.Model_DataObject_PubInfo
+@{
+    ViewBag.Title = "EmployeeDetail";
+    WebGrid grid = new WebGrid(null, rowsPerPage: 10);
+    grid.Bind(Model.PubInfos, autoSortAndPage: true, rowCount: 10);
+
+}
+
+<h2>@ViewBag.Title.</h2>
+
+
+<br />
+@grid.GetHtml(tableStyle: "table table-bordered",
+     mode: WebGridPagerModes.All,
+     firstText: "<< First",
+     previousText: "< Prev",
+     nextText: "Next >",
+     lastText: "Last >>",
+        columns: grid.Columns(
+        grid.Column("Pub_id", "Pub ID"),
+        grid.Column("Logo", "LOGO"),
+        grid.Column("Pub_name", "Pub Name"),
+        grid.Column("Pr_info", "Pr InFo"),
+        grid.Column("State", "State"),
+        grid.Column("City", "City"),
+        grid.Column("Country", "Country")
+
+))
+
+
