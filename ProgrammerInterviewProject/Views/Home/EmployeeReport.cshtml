@@ -1,0 +1,61 @@
+﻿@model YRE.ProgrammerInterviewProject.Models.DataObject.Model_DataObject_Employee
+@{
+    ViewBag.Title = "Report";
+    WebGrid grid = new WebGrid(null, rowsPerPage: @Model.PageSize);
+    grid.Bind(Model.Employees, autoSortAndPage: true, rowCount: @Model.PageSize);
+
+}
+
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<br />
+@grid.GetHtml(tableStyle: "table table-bordered",
+     mode: WebGridPagerModes.All,
+     firstText: "<< First",
+     previousText: "< Prev",
+     nextText: "Next >",
+     lastText: "Last >>",
+        columns: grid.Columns(
+        grid.Column("Emp_id", "Emp ID"),
+        grid.Column("Fname", "Fname"),
+        grid.Column("Minit", "Minit"),
+        grid.Column("Lname", "Lname"),
+        grid.Column("Job_id", "Job ID"),
+        grid.Column("Job_lvl", "Job LVL"),
+        grid.Column("Pub_id", "Pub ID"),
+        grid.Column("Hire_date", "Hire Date"),
+        grid.Column(header: "Action",
+            format: @<a data-value="@item.Emp_id" href="java{C}<!-- no -->script:void(0)">Edit</a>)
+))
+
+@section Scripts{
+    <script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var id = 0;
+            $(document).on('click', '.btnEdit', function () {
+                id = $(this).attr("data-value");
+                $('#dialog').dialog('open');
+            });
+
+            $('#dialog').dialog({
+                autoOpen: false,
+                width: 400,
+                resizable: false,
+                title: 'Edit Product details',
+                modal: true,
+                open: function (event, ui) {
+                    // Load partial view _GridEditPartial
+                    $(this).load("@Url.Action("GetProductById")", { id: id });
+                },
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    </script>
+}
