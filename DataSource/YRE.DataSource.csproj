@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="YRE.DataSource.PubInfo.cs" />
     <Compile Include="YRE.DataSource.Employee.cs" />
     <Compile Include="Entity\YRE.DataSource.Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

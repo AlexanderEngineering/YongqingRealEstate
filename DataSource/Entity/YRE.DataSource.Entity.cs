@@ -10,15 +10,41 @@ namespace YRE.DataSource.Entity
     {
         private static string db_name = "pubs";
 
-        public DataTable GetData()
+        /// <summary>
+        /// 列出指定PubID的PubInfo的資訊
+        /// </summary>
+        /// <param name="pub_id">傳來Employee的PubID</param>
+        /// <returns>PubInfo的資訊</returns>
+        public DataTable GetPubInfo()
         {
-            DataTable getdt = new DataTable();
             try
             {
+                DataTable dtpubinfo = new DataTable();
+                #region getdt DataColumn
+                dtpubinfo.Columns.Add(new DataColumn("Pub_ID"));
+                dtpubinfo.Columns.Add(new DataColumn("Logo"));
+                dtpubinfo.Columns.Add(new DataColumn("Pub_Name"));
+                dtpubinfo.Columns.Add(new DataColumn("Pr_Info"));
+                dtpubinfo.Columns.Add(new DataColumn("State"));
+                dtpubinfo.Columns.Add(new DataColumn("City"));
+                dtpubinfo.Columns.Add(new DataColumn("Country"));
+                #endregion
                 using (SqlConnection sc = new SqlConnection(ConfigurationManager.ConnectionStrings[db_name].ConnectionString))
                 {
-                    getdt = DataSourceProvider.getemployee(sc);
-                    return getdt;
+                    DataTable dt = DataSourceProvider.GetPubInfo(sc);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drpubinfo =  dtpubinfo.NewRow();
+                        drpubinfo["Pub_ID"] = dr[0];
+                        drpubinfo["Logo"] = "";
+                        drpubinfo["Pub_Name"] = dr[2].ToString().Trim();
+                        drpubinfo["Pr_Info"] = dr[3].ToString().Trim();
+                        drpubinfo["State"] = dr[4].ToString().Trim();
+                        drpubinfo["City"] = dr[5].ToString().Trim();
+                        drpubinfo["Country"] = dr[6].ToString().Trim();
+                        dtpubinfo.Rows.Add(drpubinfo);
+                    }
+                    return dtpubinfo;
                 }
             }
             catch (Exception ex)
@@ -27,7 +53,10 @@ namespace YRE.DataSource.Entity
             }
         }
 
-
+        /// <summary>
+        /// 列出Employee所有資訊
+        /// </summary>
+        /// <returns>Employee所有資訊</returns>
         public DataTable GetEmployee()
         {
             try
@@ -69,6 +98,5 @@ namespace YRE.DataSource.Entity
                 return null;
             }
         }
-
     }
 }

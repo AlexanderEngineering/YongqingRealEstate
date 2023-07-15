@@ -8,23 +8,20 @@ namespace YRE.DataSource.Provider
     {
         internal static DataTable getemployee(SqlConnection sc)
         {
-            string sqlstr = "";
-            sqlstr = string.Format(@"
+            string sqlstr = string.Format(@"
 select * from employee
 ");
-            DataTable getData = new DataTable();
-            getData = SqlAccess.GetDataTable(sc, sqlstr,1000);
+            DataTable getData = SqlAccess.GetDataTable(sc, sqlstr);
             return getData;
         }
 
-        internal static DataTable getpubinfo(SqlConnection sc)
+        internal static DataTable GetPubInfo(SqlConnection sc)
         {
-            string sqlstr = "";
-            sqlstr = string.Format(@"
-select pub_id,logo,pr_info from pub_info
-");
-            DataTable getData = new DataTable();
-            getData = SqlAccess.GetDataTable(sc, sqlstr);
+            string sqlstr = string.Format(@"
+select pi.pub_id,pi.logo,ps.pub_name,pi.pr_info,ps.state,ps.city,ps.country 
+from publishers ps,pub_info pi
+where ps.pub_id = pi.pub_id");
+            DataTable getData = SqlAccess.GetDataTable(sc, sqlstr);
             return getData;
         }
     }
