@@ -6,15 +6,15 @@ using YRE.DataSource.Entity;
 using YRE.ProgrammerInterviewProject.Models.DataObject;
 
 
-namespace YRE.ProgrammerInterviewProject.Models 
+namespace YRE.ProgrammerInterviewProject.Models.Repository
 {
-    public class EmployeeRepository : IRepository_Employee
+    public class EmployeeReportRepository : IRepository_EmployeeReport
     {
-        private static EmployeeRepository sharedRepository = new EmployeeRepository();
+        private static EmployeeReportRepository sharedRepository = new EmployeeReportRepository();
         private Dictionary<string, Model_DataObject_Employee> employees = new Dictionary<string, Model_DataObject_Employee>();
-        public static EmployeeRepository SharedRepository => sharedRepository;
+        public static EmployeeReportRepository SharedRepository => sharedRepository;
 
-        public EmployeeRepository() {
+        public EmployeeReportRepository() {
             DataSourceEntity _DataSourceEntity = new DataSourceEntity();
             DataTable dtEmployee = _DataSourceEntity.GetEmployee();
             var EmployeeItems = new List<Model_DataObject_Employee>();
@@ -35,7 +35,7 @@ namespace YRE.ProgrammerInterviewProject.Models
                 );
             }
             foreach (var e in EmployeeItems) {
-                AddEmployee(e);
+                AddEmployeeReport(e);
             }
             employees.Add("Error", null);
         }
@@ -49,6 +49,6 @@ namespace YRE.ProgrammerInterviewProject.Models
         /// 將employee的資料加入Dictionary的employees
         /// </summary>
         /// <param name="e">Model_DataObject_Employee參數</param>
-        public void AddEmployee(Model_DataObject_Employee e) => employees.Add(e.Emp_id, e);
+        public void AddEmployeeReport(Model_DataObject_Employee e) => employees.Add(e.Emp_id, e);
     }
 }
