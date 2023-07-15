@@ -47,5 +47,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\YRE.DataSource.Provider.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlConn\SqlConn.csproj">
+      <Project>{4a6d25b7-771b-4d89-b14f-677ed341038d}</Project>
+      <Name>SqlConn</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
