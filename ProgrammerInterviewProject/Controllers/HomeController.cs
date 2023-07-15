@@ -7,12 +7,14 @@ using YRE.DataSource.Entity;
 using YRE.DataSource;
 using YRE.ProgrammerInterviewProject.Models;
 using YRE.ProgrammerInterviewProject.Models.DataObject;
+using YRE.ProgrammerInterviewProject.Models.Repository;
 
 namespace YRE.ProgrammerInterviewProject.Controllers
 {
     public class HomeController : Controller
     {
-        public IRepository_Employee IRepository_Employee = EmployeeRepository.SharedRepository;
+        public IRepository_EmployeeReport IRepository_EmployeeReport = EmployeeReportRepository.SharedRepository;
+        public IRepository_EmployeeDetail IRepository_EmployeeDetail = EmployeeDetailRepository.SharedRepository;
 
         public ActionResult Index()
         {
@@ -20,31 +22,15 @@ namespace YRE.ProgrammerInterviewProject.Controllers
             return View();
         }
 
-
-        public ActionResult AddEmployee() 
-        {
-            return View();
-        }
-
-        //[HttpGet]
-        //public ActionResult AddEmployee() => View(new Model_DataObject_Employee());
-
-        //[HttpPost]
-        //public ActionResult AddEmployee(Model_DataObject_Employee e)
-        //{
-        //    IRepository_Employee.AddEmployee(e);
-        //    return RedirectToAction("Index");
-        //}
-
         public ActionResult SelfResume()
         {
 
             return View();
         }
 
-        
+        # region EmployeeReport
         [HttpPost]
-        public ActionResult EmployeeReport() => View(IRepository_Employee.Employees);
+        public ActionResult EmployeeReport() => View(IRepository_EmployeeReport.Employees);
 
         [HttpGet]
         public ActionResult EmployeeReport(int? pageNumber)
@@ -52,7 +38,7 @@ namespace YRE.ProgrammerInterviewProject.Controllers
             DataSourceEntity _DataSourceEntity = new DataSourceEntity();
             Model_DataObject_Employee _Model_DataObject_Employee = new Model_DataObject_Employee();
             _Model_DataObject_Employee.PageNumber = (pageNumber == null ? 1 : Convert.ToInt32(pageNumber));
-            _Model_DataObject_Employee.PageSize = 4;
+            _Model_DataObject_Employee.PageSize = 10;
 
             List<YRE_DataSource_Employee> employees = YRE_DataSource_Employee.GetSampleEmployees(_DataSourceEntity.GetEmployee());
 
@@ -70,12 +56,52 @@ namespace YRE.ProgrammerInterviewProject.Controllers
 
             return View(_Model_DataObject_Employee);
         }
+        #endregion
 
-        public ActionResult WebGrid()
+        # region EmployeeDetail
+        public ActionResult EmployeeDetail(int? pageNumber, int pub_id)
+        {
+            DataSourceEntity _DataSourceEntity = new DataSourceEntity();
+            Model_DataObject_PubInfo _Model_DataObject_PubInfo = new Model_DataObject_PubInfo();
+            _Model_DataObject_PubInfo.PageNumber = (pageNumber == null ? 1 : Convert.ToInt32(pageNumber));
+            _Model_DataObject_PubInfo.PageSize = 10;
+
+            var pubinfo = YRE_DataSource_PubInfo.GetSamplePubInfos(_DataSourceEntity.GetPubInfo()).Where(x => x.Pub_id == pub_id);
+
+            if (pubinfo != null)
+            {
+                foreach (var item in pubinfo)
+                {
+                    _Model_DataObject_PubInfo.Pub_id = item.Pub_id;
+                    _Model_DataObject_PubInfo.Logo = item.Logo;
+                    _Model_DataObject_PubInfo.Pub_name = item.Pub_name;
+                    _Model_DataObject_PubInfo.Pr_info = item.Pr_info;
+                    _Model_DataObject_PubInfo.State = item.State;
+                    _Model_DataObject_PubInfo.City = item.City;
+                    _Model_DataObject_PubInfo.Country = item.Country;
+                }
+
+                _Model_DataObject_PubInfo.PubInfos = pubinfo.OrderBy(x => x.Pub_id)
+                          .Skip(_Model_DataObject_PubInfo.PageSize * (_Model_DataObject_PubInfo.PageNumber - 1))
+                          .Take(_Model_DataObject_PubInfo.PageSize).ToList();
+
+                _Model_DataObject_PubInfo.TotalCount = pubinfo.Count();
+                var page = (_Model_DataObject_PubInfo.TotalCount / _Model_DataObject_PubInfo.PageSize) -
+                           (_Model_DataObject_PubInfo.TotalCount % _Model_DataObject_PubInfo.PageSize == 0 ? 1 : 0);
+                _Model_DataObject_PubInfo.PagerCount = page + 1;
+
+                return View("EmployeeDetail", _Model_DataObject_PubInfo);
+            }
+
+            return View();
+        }
+        #endregion
+        [HttpGet]
+        public ActionResult WebGrid_Employee()
         {
             DataSourceEntity _DataSourceEntity = new DataSourceEntity();
             Model_DataObject_Employee _Model_DataObject_Employee = new Model_DataObject_Employee();
-            _Model_DataObject_Employee.PageSize = 4;
+            _Model_DataObject_Employee.PageSize = 10;
 
             List<YRE_DataSource_Employee> employees = YRE_DataSource_Employee.GetSampleEmployees(_DataSourceEntity.GetEmployee());
 
@@ -87,36 +113,21 @@ namespace YRE.ProgrammerInterviewProject.Controllers
 
             return View(_Model_DataObject_Employee);
         }
-
-        public ActionResult GetProducts(string sidx, string sord, int page, int rows)
+        public ActionResult WebGrid_PubInfo()
         {
             DataSourceEntity _DataSourceEntity = new DataSourceEntity();
-            var employees = YRE_DataSource_Employee.GetSampleEmployees(_DataSourceEntity.GetEmployee());
-            int pageIndex = Convert.ToInt32(page) - 1;
-            int pageSize = rows;
-            int totalRecords = employees.Count;
-            int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+            Model_DataObject_PubInfo _Model_DataObject_PubInfo = new Model_DataObject_PubInfo();
+            _Model_DataObject_PubInfo.PageSize = 10;
 
-            var data = employees.OrderBy(x => x.Emp_id)
-                          .Skip(pageSize * (page - 1))
-                          .Take(pageSize).ToList();
+            List<YRE_DataSource_PubInfo> pubinfos = YRE_DataSource_PubInfo.GetSamplePubInfos(_DataSourceEntity.GetPubInfo());
 
-            var jsonData = new
+            if (pubinfos != null)
             {
-                total = totalPages,
-                page = page,
-                records = totalRecords,
-                rows = data
-            };
+                _Model_DataObject_PubInfo.TotalCount = pubinfos.Count();
+                _Model_DataObject_PubInfo.PubInfos = pubinfos;
+            }
 
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
+            return View(_Model_DataObject_PubInfo);
         }
-
-        public ActionResult jqGrid()
-        {
-
-            return View();
-        }
-
     }
 }
